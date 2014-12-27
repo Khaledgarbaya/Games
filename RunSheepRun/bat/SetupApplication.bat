@@ -14,10 +14,10 @@ set AND_ICONS=icons/android
 set AND_SIGNING_OPTIONS=-storetype pkcs12 -keystore "%AND_CERT_FILE%" -storepass %AND_CERT_PASS%
 
 :: iOS packaging
-set IOS_DIST_CERT_FILE=
-set IOS_DEV_CERT_FILE=
-set IOS_DEV_CERT_PASS=
-set IOS_PROVISION=cert\RunSheepRun.mobileprovision
+set IOS_DIST_CERT_FILE=cert\ios\release\RunSheepRun.p12
+set IOS_DEV_CERT_FILE=cert\ios\dev\RunSheepRun.p12
+set IOS_DEV_CERT_PASS=22698945
+set IOS_PROVISION=cert\ios\dev\RunSheepRun.mobileprovision
 set IOS_ICONS=icons/ios
 
 set IOS_DEV_SIGNING_OPTIONS=-storetype pkcs12 -keystore "%IOS_DEV_CERT_FILE%" -storepass %IOS_DEV_CERT_PASS% -provisioning-profile %IOS_PROVISION%

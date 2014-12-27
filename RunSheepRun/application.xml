@@ -1,12 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <application xmlns="http://ns.adobe.com/air/application/15.0">
-  <id>com.khaledgarbaya.runsheeprun.RunSheepRun</id>
+  <id>com.khaled.runsheeprun</id>
   <versionNumber>0.1</versionNumber>
   <supportedProfiles>mobileDevice</supportedProfiles>
   <filename>RunSheepRun</filename>
-  <name>
-    <text xml:lang="en">RunSheepRun</text>
-  </name>
   <copyright>Khaled Garbaya</copyright>
   <android>
     <manifestAdditions><![CDATA[<manifest android:installLocation="auto">
@@ -72,9 +69,5 @@
 	Android manifest documentation:
 	http://developer.android.com/guide/topics/manifest/manifest-intro.html
 	-->
-  <description>
-    <text xml:lang="en">
-    </text>
-  </description>
   <supportedLanguages>en</supportedLanguages>
 </application>
