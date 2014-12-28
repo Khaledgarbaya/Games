@@ -24,14 +24,14 @@ set IOS_DEV_SIGNING_OPTIONS=-storetype pkcs12 -keystore "%IOS_DEV_CERT_FILE%" -s
 set IOS_DIST_SIGNING_OPTIONS=-storetype pkcs12 -keystore "%IOS_DIST_CERT_FILE%" -provisioning-profile %IOS_PROVISION%
 
 :: Application descriptor
-set APP_XML=application.xml
+set APP_XML=Main-app.xml
 
 :: Files to package
 set APP_DIR=bin
 set FILE_OR_DIR=-C %APP_DIR% .
 
 :: Your application ID (must match <id> of Application descriptor)
-set APP_ID=air.com.khaledgarbaya.runsheeprun.RunSheepRun
+set APP_ID=com.khaled.runsheeprun
 
 :: Output packages
 set DIST_PATH=dist
