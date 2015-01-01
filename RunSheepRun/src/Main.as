@@ -42,7 +42,8 @@ import com.khaledgarbaya.runsheeprun.*;
         private var mStarling:Starling;
         private var mBackground:Loader;
         private var mProgressBar:ProgressBar;
-        private const BASE_PATH:String = "";
+        //set to empty when testing on device
+        private const BASE_PATH:String = "./assets/";
 
 		public function Main():void 
 		{
