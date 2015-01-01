@@ -1,6 +1,8 @@
 package com.khaledgarbaya.runsheeprun 
 {
-	import starling.display.Sprite;
+import com.khaledgarbaya.runsheeprun.screens.InGameScreen;
+
+import starling.display.Sprite;
 	import starling.events.Event;
 	
 	import com.khaledgarbaya.utils.Logger;
@@ -14,7 +16,8 @@ import starling.utils.AssetManager;
  	*/
 	public class Game extends Sprite 
 	{
-		
+		public static var gameAsset: AssetManager;
+
 		public function Game() 
 		{
 			this.addEventListener(Event.ADDED_TO_STAGE, initialize);
@@ -27,7 +30,8 @@ import starling.utils.AssetManager;
 
 		public function start(assets:AssetManager): void
 		{
-
+			gameAsset = assets;
+			addChild(new InGameScreen());
 		}
 	}
 

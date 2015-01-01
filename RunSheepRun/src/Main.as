@@ -33,11 +33,11 @@ import com.khaledgarbaya.runsheeprun.*;
      * @author kgarbaya
      * @copyright (c) Khaled Garbaya
      */
-	[SWF(width="320", height="480", frameRate="60", backgroundColor="#57BDE3")]
+	[SWF(width="480", height="320", frameRate="60", backgroundColor="#57BDE3")]
 	public class Main extends Sprite
 	{
-		private const StageWidth:int  = 320;
-        private const StageHeight:int = 480;
+		private const StageWidth:int  = 480;
+        private const StageHeight:int = 320;
 
         private var mStarling:Starling;
         private var mBackground:Loader;
@@ -67,8 +67,10 @@ import com.khaledgarbaya.runsheeprun.*;
 
             var iOS:Boolean = SystemUtil.platform == "IOS";
             var stageSize:Rectangle  = new Rectangle(0, 0, StageWidth, StageHeight);
+            trace("stage.fullScreenWidth ",stage.fullScreenWidth);
+            trace("stage.fullScreenHeight ",stage.fullScreenHeight);
             var screenSize:Rectangle = new Rectangle(0, 0, stage.fullScreenWidth, stage.fullScreenHeight);
-            var viewPort:Rectangle = RectangleUtil.fit(stageSize, screenSize, ScaleMode.SHOW_ALL, iOS);
+            var viewPort:Rectangle = new Rectangle(0,0,stage.fullScreenWidth,stage.fullScreenHeight);//RectangleUtil.fit(stageSize, screenSize, ScaleMode.SHOW_ALL, iOS);
             var scaleFactor:int = viewPort.width < 480 ? 1 : 2; // midway between 320 and 640
 
             Starling.multitouchEnabled = true; // useful on mobile devices
@@ -76,6 +78,8 @@ import com.khaledgarbaya.runsheeprun.*;
             RenderTexture.optimizePersistentBuffers = iOS; // safe on iOS, dangerous on Android
 
             mStarling = new Starling(Game, stage, viewPort, null, "auto", "auto");
+            trace("viewport.width ",viewPort.width);
+            trace("viewPort.height ",viewPort.height);
             mStarling.stage.stageWidth    = StageWidth;  // <- same size on all devices!
             mStarling.stage.stageHeight   = StageHeight; // <- same size on all devices!
             mStarling.enableErrorChecking = Capabilities.isDebugger;
@@ -180,13 +184,13 @@ import com.khaledgarbaya.runsheeprun.*;
             {
                 mStarling.nativeOverlay.removeChild(mBackground);
                 mBackground = null;
-            }
+            }*/
 
             if (mProgressBar)
             {
                 mStarling.nativeOverlay.removeChild(mProgressBar);
                 mProgressBar = null;
-            }*/
+            }
         }
 		
 	}
