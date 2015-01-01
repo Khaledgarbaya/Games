@@ -7,10 +7,11 @@ package com.khaledgarbaya.runsheeprun
 
 import starling.utils.AssetManager;
 
-/**
+	/**
 	 * ...
 	 * @author kgarbaya
-	 */
+	 * @copyright (c) Khaled Garbaya
+ 	*/
 	public class Game extends Sprite 
 	{
 		
