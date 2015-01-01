@@ -4,7 +4,10 @@ package com.khaledgarbaya.runsheeprun
 	import starling.events.Event;
 	
 	import com.khaledgarbaya.utils.Logger;
-	/**
+
+import starling.utils.AssetManager;
+
+/**
 	 * ...
 	 * @author kgarbaya
 	 */
@@ -20,7 +23,11 @@ package com.khaledgarbaya.runsheeprun
 			this.removeEventListener(Event.ADDED_TO_STAGE, initialize);
 			Logger.info("Game::initialize");
 		}
-		
+
+		public function start(assets:AssetManager): void
+		{
+
+		}
 	}
 
 }

@@ -102,7 +102,7 @@ package com.khaledgarbaya.runsheeprun
             // Our assets are loaded and managed by the 'AssetManager'. To use that class,
             // we first have to enqueue pointers to all assets we want it to load.
 
-            /*var appDir:File = File.applicationDirectory;
+            var appDir:File = File.applicationDirectory;
             var assets:AssetManager = new AssetManager(scaleFactor);
 
             assets.verbose = Capabilities.isDebugger;
@@ -120,14 +120,14 @@ package com.khaledgarbaya.runsheeprun
             {
                 mProgressBar.ratio = ratio;
                 if (ratio == 1) onComplete(assets);
-            });*/
+            });
         }
 
         private function startGame(assets:AssetManager):void
         {
-           /* var game:Game = mStarling.root as Game;
+           var game:Game = mStarling.root as Game;
             game.start(assets);
-            setTimeout(removeElements, 150);*/ // delay to make 100% sure there's no flickering.
+            setTimeout(removeElements, 150);// delay to make 100% sure there's no flickering.
         }
 
         private function initElements(scaleFactor:int):void
