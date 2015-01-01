@@ -28,13 +28,13 @@ package com.khaledgarbaya.runsheeprun
 	
 	import utils.ProgressBar;
 	import com.khaledgarbaya.utils.Logger;
-
-	/**
-	 * ...
-	 * @author kgarbaya
-	 */
+    /**
+     * ...
+     * @author kgarbaya
+     * @copyright (c) Khaled Garbaya
+     */
 	[SWF(width="320", height="480", frameRate="60", backgroundColor="#57BDE3")]
-	public class Main extends Sprite 
+	public class Main extends Sprite
 	{
 		private const StageWidth:int  = 320;
         private const StageHeight:int = 480;
@@ -78,7 +78,7 @@ package com.khaledgarbaya.runsheeprun
             mStarling.stage.stageHeight   = StageHeight; // <- same size on all devices!
             mStarling.enableErrorChecking = Capabilities.isDebugger;
             mStarling.simulateMultitouch  = false;
-            mStarling.addEventListener(starling.events.Event.ROOT_CREATED, function():void
+            mStarling.addEventListener(starling.events.Event.ROOT_CREATED, function(event: starling.events.Event):void
             {
                 loadAssets(scaleFactor, startGame);
             });
