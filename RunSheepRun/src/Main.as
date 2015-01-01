@@ -1,5 +1,5 @@
-package com.khaledgarbaya.runsheeprun
-{
+package {
+import com.khaledgarbaya.runsheeprun.*;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.ui.Multitouch;
@@ -42,6 +42,7 @@ package com.khaledgarbaya.runsheeprun
         private var mStarling:Starling;
         private var mBackground:Loader;
         private var mProgressBar:ProgressBar;
+        private const BASE_PATH:String = "";
 
 		public function Main():void 
 		{
@@ -103,14 +104,24 @@ package com.khaledgarbaya.runsheeprun
             // we first have to enqueue pointers to all assets we want it to load.
 
             var appDir:File = File.applicationDirectory;
+            var files:Array = appDir.getDirectoryListing();
+
+            for (var i:uint=0; i<files.length;i++)
+            {
+                trace(files[i].name);
+                trace(files[i].nativePath);
+            }
             var assets:AssetManager = new AssetManager(scaleFactor);
 
             assets.verbose = Capabilities.isDebugger;
-            assets.enqueue(
-                    appDir.resolvePath("audio"),
-                    appDir.resolvePath(formatString("fonts/{0}x",    scaleFactor)),
-                    appDir.resolvePath(formatString("textures/{0}x", scaleFactor))
-            );
+            if (!SystemUtil.isDesktop)
+            {
+                assets.enqueue(
+                        appDir.resolvePath(BASE_PATH+"audio"),
+                        appDir.resolvePath(formatString(BASE_PATH+"fonts/{0}x", scaleFactor)),
+                        appDir.resolvePath(formatString(BASE_PATH+"textures/{0}x", scaleFactor))
+                );
+            }
 
             // Now, while the AssetManager now contains pointers to all the assets, it actually
             // has not loaded them yet. This happens in the "loadQueue" method; and since this
@@ -153,13 +164,13 @@ package com.khaledgarbaya.runsheeprun
                 {
                     (mBackground.content as Bitmap).smoothing = true;
                 });
-
+            */
             // While the assets are loaded, we will display a progress bar.
 
             mProgressBar = new ProgressBar(175, 20);
             mProgressBar.x = (StageWidth - mProgressBar.width) / 2;
             mProgressBar.y =  StageHeight * 0.7;
-            mStarling.nativeOverlay.addChild(mProgressBar);*/
+            mStarling.nativeOverlay.addChild(mProgressBar);
         }
 
         private function removeElements():void
