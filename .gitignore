@@ -10,3 +10,31 @@ bin-release/
 # should NOT be excluded as they contain compiler settings and other important
 # information for Eclipse / Flash Builder.
 RunSheepRun/dist/RunSheepRun-debug-interpreter.ipa
+
+.idea/workspace.xml
+
+.idea/vcs.xml
+
+.idea/scopes/scope_settings.xml
+
+.idea/modules.xml
+
+.idea/misc.xml
+
+.idea/libraries/starling.xml
+
+.idea/flexCompiler.xml
+
+.idea/encodings.xml
+
+.idea/copyright/profiles_settings.xml
+
+.idea/compiler.xml
+
+.idea/.name
+
+RunSheepRun/RunSheepRun.iml
+
+*.iml
+
+RunSheepRun/RunSheepRun.iml
