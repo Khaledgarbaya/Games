@@ -55,12 +55,17 @@ public class SheepAnimation extends Sprite
         armature = factory.buildArmature("Duplicate Items Folder/mouton copy");
         addChild(armature.display as Sprite);
         WorldClock.clock.add(armature);
+
         armature.animation.gotoAndPlay("run");
         addEventListener(starling.events.Event.ENTER_FRAME, tick);
     }
 
     private function tick(event:starling.events.Event):void
     {
+        if(armature.animation.isComplete)
+        {
+            armature.animation.gotoAndPlay("run");
+        }
         WorldClock.clock.advanceTime(-1);
     }
 }

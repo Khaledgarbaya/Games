@@ -27,7 +27,7 @@ public class InGameScreen extends Sprite
         private function initialize(event:Event): void
         {
             this.removeEventListener(Event.ADDED_TO_STAGE, initialize);
-            //Game.gameAsset.playSound("music_game_intro",0,9999);
+            Game.gameAsset.playSound("music_game_intro",0,9999);
             grasse = new Image(Game.gameAsset.getTexture("grass"));
             grasse.y = stage.stageHeight - grasse.texture.height;
             addChild(grasse);
@@ -46,8 +46,9 @@ public class InGameScreen extends Sprite
             addChild(cloud);
 
             sheep = new SheepAnimation();
+            sheep.scaleX = sheep.scaleY = 0.5;
             sheep.x = 150;
-            sheep.y = routes[0].y + routes[0].texture.height/2;
+            sheep.y = routes[0].y + routes[0].texture.height/4;
             addChild(sheep);
         }
     }
