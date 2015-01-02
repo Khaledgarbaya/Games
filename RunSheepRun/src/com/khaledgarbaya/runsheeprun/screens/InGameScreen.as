@@ -35,7 +35,7 @@ public class InGameScreen extends Sprite
             {
                 route = new Image(Game.gameAsset.getTexture("route"));
                 route.y = (stage.stageHeight - route.texture.height ) - route.texture.height/3;
-                route.x += i == 0 ? 0 : routes[i-1].x+routes[i-1].texture.width;
+                route.x += i == 0 ? -3 : routes[i-1].x+routes[i-1].texture.width - 3;
                 addChild(route);
                 routes.push(route);
             }
