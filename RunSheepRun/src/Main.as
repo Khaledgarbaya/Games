@@ -123,6 +123,7 @@ import com.khaledgarbaya.runsheeprun.*;
             {
                 assets.enqueue(
                         appDir.resolvePath(BASE_PATH+"audio"),
+                        appDir.resolvePath(BASE_PATH+"animation"),
                         appDir.resolvePath(formatString(BASE_PATH+"fonts/{0}x", scaleFactor)),
                         appDir.resolvePath(formatString(BASE_PATH+"textures/{0}x", scaleFactor))
                 );

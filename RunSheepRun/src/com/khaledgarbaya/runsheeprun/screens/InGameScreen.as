@@ -6,6 +6,7 @@
 package com.khaledgarbaya.runsheeprun.screens
 {
 import com.khaledgarbaya.runsheeprun.Game;
+import com.khaledgarbaya.runsheeprun.objects.SheepAnimation;
 
 import starling.display.Image;
 import starling.display.Sprite;
@@ -17,6 +18,7 @@ public class InGameScreen extends Sprite
         private var grasse: Image;
         private var route: Image;
         private var routes: Vector.<Image>;
+        private var sheep:SheepAnimation;
         public function InGameScreen()
         {
             this.addEventListener(Event.ADDED_TO_STAGE, initialize)
@@ -25,7 +27,7 @@ public class InGameScreen extends Sprite
         private function initialize(event:Event): void
         {
             this.removeEventListener(Event.ADDED_TO_STAGE, initialize);
-
+            //Game.gameAsset.playSound("music_game_intro",0,9999);
             grasse = new Image(Game.gameAsset.getTexture("grass"));
             grasse.y = stage.stageHeight - grasse.texture.height;
             addChild(grasse);
@@ -42,6 +44,11 @@ public class InGameScreen extends Sprite
 
             cloud = new Image(Game.gameAsset.getTexture("cloud"));
             addChild(cloud);
+
+            sheep = new SheepAnimation();
+            sheep.x = 150;
+            sheep.y = routes[0].y + routes[0].texture.height/2;
+            addChild(sheep);
         }
     }
 }
