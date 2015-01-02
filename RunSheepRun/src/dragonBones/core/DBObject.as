@@ -1,11 +1,11 @@
 package dragonBones.core
 {
-	import flash.geom.Matrix;
-	
 	import dragonBones.Armature;
 	import dragonBones.Bone;
 	import dragonBones.core.dragonBones_internal;
 	import dragonBones.objects.DBTransform;
+	
+	import flash.geom.Matrix;
 	
 	use namespace dragonBones_internal;
 
@@ -28,11 +28,17 @@ package dragonBones.core
 		 */
 		public var inheritScale:Boolean;
 		
-		/** @private */
-		dragonBones_internal var _globalTransformMatrix:Matrix;
+		/**
+		 * 
+		 */
+		public var inheritTranslation:Boolean;
 		
 		/** @private */
 		dragonBones_internal var _global:DBTransform;
+		
+		/** @private */
+		dragonBones_internal var _globalTransformMatrix:Matrix;
+		
 		/**
 		 * This DBObject instance global transform instance.
 		 * @see dragonBones.objects.DBTransform

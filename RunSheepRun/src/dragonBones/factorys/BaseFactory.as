@@ -26,6 +26,7 @@ package dragonBones.factorys
 	import flash.system.ApplicationDomain;
 	import flash.system.LoaderContext;
 	import flash.utils.ByteArray;
+	import flash.utils.Dictionary;
 	
 	use namespace dragonBones_internal;
 	
@@ -198,8 +199,6 @@ package dragonBones.factorys
 			var armatureData:ArmatureData;
 			var animationArmatureData:ArmatureData;
 			var skinData:SkinData;
-			
-			var armatureDataCopy:ArmatureData;
 			var skinDataCopy:SkinData;
 			
 			if(skeletonName)
@@ -277,7 +276,7 @@ package dragonBones.factorys
 				buildSlots(armature, armatureData, skinData, skinDataCopy);
 			}
 			
-			//
+			// update armature pose
 			armature.advanceTime(0);
 			return armature;
 		}
@@ -286,11 +285,10 @@ package dragonBones.factorys
 		 * Add a new animation to armature.
 		 * @param animationRawData (XML, JSON).
 		 * @param target armature.
-		 * @param frame rate.
 		 */
-		public function addAnimationToArmature(animationRawData:Object, armature:Armature, frameRate:uint):void
+		public function addAnimationToArmature(animationRawData:Object, armature:Armature, isRelativeData:Boolean = false):void
 		{
-			armature._armatureData.addAnimationData(DataParser.parseAnimationDataByAnimationRawData(animationRawData,armature._armatureData, frameRate));
+			armature._armatureData.addAnimationData(DataParser.parseAnimationDataByAnimationRawData(animationRawData,armature._armatureData, isRelativeData));
 		}
 		
 		/**
@@ -352,8 +350,8 @@ package dragonBones.factorys
 				var boneData:BoneData = armatureData.boneDataList[i];
 				var bone:Bone = new Bone();
 				bone.name = boneData.name;
-				bone.inheritRotation = boneData.inheritRotation;
-				bone.inheritScale = boneData.inheritScale;
+				//bone.inheritRotation = boneData.inheritRotation;
+				//bone.inheritScale = boneData.inheritScale;
 				bone.origin.copy(boneData.transform);
 				if(armatureData.getBoneData(boneData.parent))
 				{
@@ -403,15 +401,15 @@ package dragonBones.factorys
 							}
 							
 							var childArmature:Armature = buildArmature(displayData.name, displayDataCopy?displayDataCopy.name:null, _currentDataName, _currentTextureAtlasName);
-							if(childArmature)
-							{
-								helpArray[i] = childArmature;
-							}
+							helpArray[i] = childArmature;
 							break;
 						
 						case DisplayData.IMAGE:
-						default:
 							helpArray[i] = generateDisplay(_textureAtlasDic[_currentTextureAtlasName], displayData.name, displayData.pivot.x, displayData.pivot.y);
+							break;
+						
+						default:
+							helpArray[i] = null;
 							break;
 						
 					}
@@ -421,14 +419,21 @@ package dragonBones.factorys
 				//如果显示对象有name属性并且name属性可以设置的话，将name设置为与slot同名，dragonBones并不依赖这些属性，只是方便开发者
 				for each(var displayObject:Object in helpArray)
 				{
-					if(displayObject && "name" in displayObject)
+					if(displayObject is Armature)
 					{
-						try
+						(displayObject as Armature).display["name"] = slot.name;
+					}
+					else
+					{
+						if(displayObject && "name" in displayObject)
 						{
-							displayObject["name"] = slot.name;
-						}
-						catch(err:Error)
-						{
+							try
+							{
+								displayObject["name"] = slot.name;
+							}
+							catch(err:Error)
+							{
+							}
 						}
 					}
 				}
@@ -480,8 +485,6 @@ package dragonBones.factorys
 			return null;
 		}
 		
-		
-		
 		//==================================================
 		//解析dbswf和dbpng，如果不能序列化amf3格式无法实现解析
 		/** @private */
@@ -502,9 +505,11 @@ package dragonBones.factorys
 		 * </listing>
 		 * @param ByteArray. Represents the raw data for the whole DragonBones system.
 		 * @param String. (optional) The SkeletonData instance name.
+		 * @param Boolean. (optional) flag if delay animation data parsing. Delay animation data parsing can reduce the data paring time to improve loading performance.
+		 * @param Dictionary. (optional) output parameter. If it is not null, and ifSkipAnimationData is true, it will be fulfilled animationData, so that developers can parse it later.
 		 * @return A SkeletonData instance.
 		 */
-		public function parseData(bytes:ByteArray, dataName:String = null, ifSkipAnimationData:Boolean = false):SkeletonData
+		public function parseData(bytes:ByteArray, dataName:String = null, ifSkipAnimationData:Boolean = false, outputAnimationDictionary:Dictionary = null):SkeletonData
 		{
 			if(!bytes)
 			{
@@ -512,7 +517,7 @@ package dragonBones.factorys
 			}
 			var decompressedData:DecompressedData = DataParser.decompressData(bytes);
 			
-			var data:SkeletonData = DataParser.parseData(decompressedData.dragonBonesData);
+			var data:SkeletonData = DataParser.parseData(decompressedData.dragonBonesData, ifSkipAnimationData, outputAnimationDictionary);
 			
 			dataName = dataName || data.name;
 			addSkeletonData(data, dataName);

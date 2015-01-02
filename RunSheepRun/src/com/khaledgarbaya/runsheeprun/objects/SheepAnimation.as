@@ -11,6 +11,7 @@ import dragonBones.animation.WorldClock;
 import dragonBones.factorys.StarlingFactory;
 
 import flash.display.Loader;
+import flash.events.Event;
 import flash.net.URLLoader;
 import flash.net.URLLoaderDataFormat;
 import flash.net.URLRequest;
@@ -28,10 +29,10 @@ public class SheepAnimation extends Sprite
     private static const ResourcesData:Class;
     public function SheepAnimation()
     {
-        this.addEventListener(Event.ADDED_TO_STAGE, initialize);
+        this.addEventListener(starling.events.Event.ADDED_TO_STAGE, initialize);
     }
 
-    private function initialize(event:Event):void
+    private function initialize(event:starling.events.Event):void
     {
         // load dragonBones Animation
 //        loader = new URLLoader();
@@ -39,26 +40,26 @@ public class SheepAnimation extends Sprite
 //        loader.addEventListener(Event.COMPLETE, loadComplete);
 //        loader.load(new URLRequest("./assets/"))
 
-        loadComplete(null)
+        loadComplete();
     }
 
-    private function loadComplete(event:Event):void
+    private function loadComplete():void
     {
         factory = new StarlingFactory();
-        factory.addEventListener(Event.COMPLETE, textureCompleteHandler);
+        factory.addEventListener(flash.events.Event.COMPLETE, textureCompleteHandler);
         factory.parseData(new ResourcesData());
     }
 
-    private function textureCompleteHandler(event:Event):void
+    private function textureCompleteHandler(event:flash.events.Event):void
     {
-        armature = factory.buildArmature("sheep_animation");
+        armature = factory.buildArmature("Duplicate Items Folder/mouton copy");
         addChild(armature.display as Sprite);
         WorldClock.clock.add(armature);
         armature.animation.gotoAndPlay("run");
-        addEventListener(Event.ENTER_FRAME, tick);
+        addEventListener(starling.events.Event.ENTER_FRAME, tick);
     }
 
-    private function tick(event:Event):void
+    private function tick(event:starling.events.Event):void
     {
         WorldClock.clock.advanceTime(-1);
     }

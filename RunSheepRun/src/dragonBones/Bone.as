@@ -1,8 +1,5 @@
 ﻿package dragonBones
 {
-	import flash.geom.Matrix;
-	import flash.geom.Point;
-	
 	import dragonBones.animation.AnimationState;
 	import dragonBones.animation.TimelineState;
 	import dragonBones.core.DBObject;
@@ -15,6 +12,10 @@
 	import dragonBones.objects.FrameCached;
 	import dragonBones.objects.TimelineCached;
 	import dragonBones.objects.TransformFrame;
+	import dragonBones.utils.TransformUtil;
+	
+	import flash.geom.Matrix;
+	import flash.geom.Point;
 	
 	use namespace dragonBones_internal;
 	
@@ -104,6 +105,18 @@
 		/** @private */
 		protected var _timelineStateList:Vector.<TimelineState>;
 		
+		private static var _tempMatrix:Matrix = new Matrix();
+		private static var _tempTransform:DBTransform = new DBTransform();
+		
+		private var _tempGlobalTransformForChild:DBTransform;
+		dragonBones_internal var _globalTransformForChild:DBTransform;
+		private var _tempGlobalTransformMatrixForChild:Matrix;
+		dragonBones_internal var _globalTransformMatrixForChild:Matrix;
+		
+		public var applyOffsetTranslationToChild:Boolean = true;
+		public var applyOffsetRotationToChild:Boolean = true;
+		public var applyOffsetScaleToChild:Boolean = false;
+		
 		/** @private */
 		override public function set visible(value:Boolean):void
 		{
@@ -149,7 +162,7 @@
 			
 			_tween = new DBTransform();
 			_tweenPivot = new Point();
-			_tween.scaleX = _tween.scaleY = 0;
+			_tween.scaleX = _tween.scaleY = 1;
 			
 			_boneList = new Vector.<Bone>;
 			_boneList.fixed = true;
@@ -163,7 +176,8 @@
 			_frameCachedDuration = -1;
 			
 			this.inheritRotation = true;
-			this.inheritScale = false;
+			this.inheritScale = true;
+			this.inheritTranslation = true;
 		}
 		
 		/**
@@ -383,6 +397,7 @@
 			
 			blendingTimeline();
 			
+			/*
 			this._global.scaleX = (this._origin.scaleX + _tween.scaleX) * this._offset.scaleX;
 			this._global.scaleY = (this._origin.scaleY + _tween.scaleY) * this._offset.scaleY;
 			
@@ -421,113 +436,115 @@
 				this._global.skewY = this._origin.skewY + this._offset.skewY + _tween.skewY;
 			}
 			
-			/*
 			this._globalTransformMatrix.a = this._global.scaleX * Math.cos(this._global.skewY);
 			this._globalTransformMatrix.b = this._global.scaleX * Math.sin(this._global.skewY);
 			this._globalTransformMatrix.c = -this._global.scaleY * Math.sin(this._global.skewX);
 			this._globalTransformMatrix.d = this._global.scaleY * Math.cos(this._global.skewX);
-			*/
-			
-			this._globalTransformMatrix.a = this._offset.scaleX * Math.cos(this._global.skewY);
-			this._globalTransformMatrix.b = this._offset.scaleX * Math.sin(this._global.skewY);
-			this._globalTransformMatrix.c = -this._offset.scaleY * Math.sin(this._global.skewX);
-			this._globalTransformMatrix.d = this._offset.scaleY * Math.cos(this._global.skewX);
 			
 			if(_frameCachedDuration > 0)    // && _frameCachedPosition >= 0
 			{
 				_timelineCached.addFrame(this._global, this._globalTransformMatrix, _frameCachedPosition, _frameCachedDuration);
 			}
-		}
-		
-		/** @private When bone timeline enter a key frame, call this func*/
-		dragonBones_internal function arriveAtFrame(frame:Frame, timelineState:TimelineState, animationState:AnimationState, isCross:Boolean):void
-		{
-			var displayControl:Boolean = 
-				animationState.displayControl &&
-				(!displayController || displayController == animationState.name) &&
-				animationState.getMixingTransform(name) == 0
+			*/
 			
-			if(displayControl)
+		//计算global
+			_global.scaleX = this._origin.scaleX * _tween.scaleX * this._offset.scaleX;
+			_global.scaleY = this._origin.scaleY * _tween.scaleY * this._offset.scaleY;
+			_global.skewX = this._origin.skewX + _tween.skewX + this._offset.skewX;
+			_global.skewY = this._origin.skewY + _tween.skewY + this._offset.skewY;
+			_global.x = this._origin.x + _tween.x + this._offset.x;
+			_global.y = this._origin.y + _tween.y + this._offset.y;
+			TransformUtil.transformToMatrix(_global, _globalTransformMatrix, true);
+			
+			var parentGlobalTransform:DBTransform;
+			var parentGlobalTransformMatrix:Matrix;
+			if(this.parent && (this.inheritTranslation || this.inheritRotation || this.inheritScale))
 			{
-				var slot:Slot;
+				parentGlobalTransform = this._parent._globalTransformForChild;
+				parentGlobalTransformMatrix = this._parent._globalTransformMatrixForChild;
 				
-				if(frame)
+				if(!this.inheritTranslation || !this.inheritRotation || !this.inheritScale)
 				{
-					var tansformFrame:TransformFrame = frame as TransformFrame;
-					var displayIndex:int = tansformFrame.displayIndex;
-					for each(slot in _slotList)
+					parentGlobalTransform = _tempTransform;
+					parentGlobalTransform.copy(this._parent._globalTransformForChild);
+					if(!this.inheritTranslation)
 					{
-						slot.changeDisplay(displayIndex);
-						slot.updateDisplayVisible(tansformFrame.visible);
-						if(displayIndex >= 0)
-						{
-							if(!isNaN(tansformFrame.zOrder) && tansformFrame.zOrder != slot._tweenZOrder)
-							{
-								slot._tweenZOrder = tansformFrame.zOrder;
-								this._armature._slotsZOrderChanged = true;
-							}
-						}
+						parentGlobalTransform.x = 0;
+						parentGlobalTransform.y = 0;
+					}
+					if(!this.inheritScale)
+					{
+						parentGlobalTransform.scaleX = 1;
+						parentGlobalTransform.scaleY = 1;
+					}
+					if(!this.inheritRotation)
+					{
+						parentGlobalTransform.skewX = 0;
+						parentGlobalTransform.skewY = 0;
 					}
 					
-					if(frame.event && this._armature.hasEventListener(FrameEvent.BONE_FRAME_EVENT))
-					{
-						var frameEvent:FrameEvent = new FrameEvent(FrameEvent.BONE_FRAME_EVENT);
-						frameEvent.bone = this;
-						frameEvent.animationState = animationState;
-						frameEvent.frameLabel = frame.event;
-						this._armature._eventList.push(frameEvent);
-					}
-					
-					if(frame.sound && _soundManager.hasEventListener(SoundEvent.SOUND))
-					{
-						var soundEvent:SoundEvent = new SoundEvent(SoundEvent.SOUND);
-						soundEvent.armature = this._armature;
-						soundEvent.animationState = animationState;
-						soundEvent.sound = frame.sound;
-						_soundManager.dispatchEvent(soundEvent);
-					}
-					
-					//[TODO]currently there is only gotoAndPlay belongs to frame action. In future, there will be more.  
-					//后续会扩展更多的action，目前只有gotoAndPlay的含义
-					if(frame.action) 
-					{
-						for each(slot in _slotList)
-						{
-							var childArmature:Armature = slot.childArmature;
-							if(childArmature)
-							{
-								childArmature.animation.gotoAndPlay(frame.action);
-							}
-						}
-					}
+					parentGlobalTransformMatrix = _tempMatrix;
+					TransformUtil.transformToMatrix(parentGlobalTransform, parentGlobalTransformMatrix, true);
 				}
-				else
+				_globalTransformMatrix.concat(parentGlobalTransformMatrix);
+				TransformUtil.matrixToTransform(_globalTransformMatrix, _global, _global.scaleX * parentGlobalTransform.scaleX >= 0, _global.scaleY * parentGlobalTransform.scaleY >= 0);
+			}
+			
+		//计算globalForChild
+			var ifExistOffsetTranslation:Boolean = _offset.x != 0 || _offset.y != 0;
+			var ifExistOffsetScale:Boolean = _offset.scaleX != 0 || _offset.scaleY != 0;
+			var ifExistOffsetRotation:Boolean = _offset.skewX != 0 || _offset.skewY != 0;
+			
+			if(	(!ifExistOffsetTranslation || applyOffsetTranslationToChild) &&
+				(!ifExistOffsetScale || applyOffsetScaleToChild) &&
+				(!ifExistOffsetRotation || applyOffsetRotationToChild))
+			{
+				_globalTransformForChild = _global;
+				_globalTransformMatrixForChild = _globalTransformMatrix;
+			}
+			else
+			{
+				if(!_tempGlobalTransformForChild)
 				{
-					for each(slot in _slotList)
-					{
-						slot.changeDisplay(-1);
-					}
+					_tempGlobalTransformForChild = new DBTransform();
 				}
-			}
-		}
-		
-		/** @private */
-		dragonBones_internal function addState(timelineState:TimelineState):void
-		{
-			if(_timelineStateList.indexOf(timelineState) < 0)
-			{
-				_timelineStateList.push(timelineState);
-				_timelineStateList.sort(sortState);
-			}
-		}
-		
-		/** @private */
-		dragonBones_internal function removeState(timelineState:TimelineState):void
-		{
-			var index:int = _timelineStateList.indexOf(timelineState);
-			if(index >= 0)
-			{
-				_timelineStateList.splice(index, 1);
+				_globalTransformForChild = _tempGlobalTransformForChild;
+				
+				if(!_tempGlobalTransformMatrixForChild)
+				{
+					_tempGlobalTransformMatrixForChild = new Matrix();
+				}
+				_globalTransformMatrixForChild = _tempGlobalTransformMatrixForChild;
+				
+				_globalTransformForChild.x = this._origin.x + _tween.x;
+				_globalTransformForChild.y = this._origin.y + _tween.y;
+				_globalTransformForChild.scaleX = this._origin.scaleX * _tween.scaleX;
+				_globalTransformForChild.scaleY = this._origin.scaleY * _tween.scaleY;
+				_globalTransformForChild.skewX = this._origin.skewX + _tween.skewX;
+				_globalTransformForChild.skewY = this._origin.skewY + _tween.skewY;
+				
+				if(applyOffsetTranslationToChild)
+				{
+					_globalTransformForChild.x += this._offset.x;
+					_globalTransformForChild.y += this._offset.y;
+				}
+				if(applyOffsetScaleToChild)
+				{
+					_globalTransformForChild.scaleX *= this._offset.scaleX;
+					_globalTransformForChild.scaleY *= this._offset.scaleY;
+				}
+				if(applyOffsetRotationToChild)
+				{
+					_globalTransformForChild.skewX += this._offset.skewX;
+					_globalTransformForChild.skewY += this._offset.skewY;
+				}
+				
+				TransformUtil.transformToMatrix(_globalTransformForChild, _globalTransformMatrixForChild, true);
+				if(parentGlobalTransformMatrix)
+				{
+					_globalTransformMatrixForChild.concat(parentGlobalTransformMatrix);
+					TransformUtil.matrixToTransform(_globalTransformMatrixForChild, _globalTransformForChild, _globalTransformForChild.scaleX * parentGlobalTransform.scaleX >= 0, _globalTransformForChild.scaleY * parentGlobalTransform.scaleY >= 0 );
+				}
 			}
 		}
 		
@@ -555,6 +572,96 @@
 			_isColorChanged = colorChanged;
 		}
 		
+		/** @private */
+		dragonBones_internal function hideSlots():void
+		{
+			for each(var slot:Slot in _slotList)
+			{
+				slot.changeDisplay(-1);
+			}
+		}
+		
+		/** @private When bone timeline enter a key frame, call this func*/
+		dragonBones_internal function arriveAtFrame(frame:Frame, timelineState:TimelineState, animationState:AnimationState, isCross:Boolean):void
+		{
+			var displayControl:Boolean = 
+				animationState.displayControl &&
+				(!displayController || displayController == animationState.name) &&
+				animationState.getMixingTransform(name) == 0
+			
+			if(displayControl)
+			{
+				var slot:Slot;
+				var tansformFrame:TransformFrame = frame as TransformFrame;
+				var displayIndex:int = tansformFrame.displayIndex;
+				for each(slot in _slotList)
+				{
+					slot.changeDisplay(displayIndex);
+					slot.updateDisplayVisible(tansformFrame.visible);
+					if(displayIndex >= 0)
+					{
+						if(!isNaN(tansformFrame.zOrder) && tansformFrame.zOrder != slot._tweenZOrder)
+						{
+							slot._tweenZOrder = tansformFrame.zOrder;
+							this._armature._slotsZOrderChanged = true;
+						}
+					}
+				}
+				
+				if(frame.event && this._armature.hasEventListener(FrameEvent.BONE_FRAME_EVENT))
+				{
+					var frameEvent:FrameEvent = new FrameEvent(FrameEvent.BONE_FRAME_EVENT);
+					frameEvent.bone = this;
+					frameEvent.animationState = animationState;
+					frameEvent.frameLabel = frame.event;
+					this._armature._eventList.push(frameEvent);
+				}
+				
+				if(frame.sound && _soundManager.hasEventListener(SoundEvent.SOUND))
+				{
+					var soundEvent:SoundEvent = new SoundEvent(SoundEvent.SOUND);
+					soundEvent.armature = this._armature;
+					soundEvent.animationState = animationState;
+					soundEvent.sound = frame.sound;
+					_soundManager.dispatchEvent(soundEvent);
+				}
+				
+				//[TODO]currently there is only gotoAndPlay belongs to frame action. In future, there will be more.  
+				//后续会扩展更多的action，目前只有gotoAndPlay的含义
+				if(frame.action) 
+				{
+					for each(slot in _slotList)
+					{
+						var childArmature:Armature = slot.childArmature;
+						if(childArmature)
+						{
+							childArmature.animation.gotoAndPlay(frame.action);
+						}
+					}
+				}
+			}
+		}
+		
+		/** @private */
+		dragonBones_internal function addState(timelineState:TimelineState):void
+		{
+			if(_timelineStateList.indexOf(timelineState) < 0)
+			{
+				_timelineStateList.push(timelineState);
+				_timelineStateList.sort(sortState);
+			}
+		}
+		
+		/** @private */
+		dragonBones_internal function removeState(timelineState:TimelineState):void
+		{
+			var index:int = _timelineStateList.indexOf(timelineState);
+			if(index >= 0)
+			{
+				_timelineStateList.splice(index, 1);
+			}
+		}
+		
 		private function blendingTimeline():void
 		{
 			var timelineState:TimelineState;
@@ -566,7 +673,8 @@
 			if(i == 1)
 			{
 				timelineState = _timelineStateList[0];
-				weight = timelineState.weight;
+				weight = timelineState._animationState.weight * timelineState._animationState.fadeWeight;
+				timelineState._weight = weight;
 				transform = timelineState._transform;
 				pivot = timelineState._pivot;
 				
@@ -574,13 +682,11 @@
 				_tween.y = transform.y * weight;
 				_tween.skewX = transform.skewX * weight;
 				_tween.skewY = transform.skewY * weight;
-				_tween.scaleX = transform.scaleX * weight;
-				_tween.scaleY = transform.scaleY * weight;
-				//_tween.copy(transform);
+				_tween.scaleX = 1 + (transform.scaleX - 1) * weight;
+				_tween.scaleY = 1 + (transform.scaleY - 1) * weight;
 				
 				_tweenPivot.x = pivot.x * weight;
 				_tweenPivot.y = pivot.y * weight;
-				//_tweenPivot.copyFrom(pivot);
 			}
 			else if(i > 1)
 			{
@@ -588,14 +694,14 @@
 				var y:Number = 0;
 				var skewX:Number = 0;
 				var skewY:Number = 0;
-				var scaleX:Number = 0;
-				var scaleY:Number = 0;
+				var scaleX:Number = 1;
+				var scaleY:Number = 1;
 				var pivotX:Number = 0;
 				var pivotY:Number = 0;
 				
 				var weigthLeft:Number = 1;
 				var layerTotalWeight:Number = 0;
-				var exLayer:int = _timelineStateList[i - 1].layer;
+				var prevLayer:int = _timelineStateList[i - 1]._animationState.layer;
 				var currentLayer:int;
 				
 				//Traversal the layer from up to down
@@ -605,11 +711,12 @@
 				{
 					timelineState = _timelineStateList[i];
 					
-					currentLayer = timelineState.layer;
-					if(exLayer != currentLayer)
+					currentLayer = timelineState._animationState.layer;
+					if(prevLayer != currentLayer)
 					{
 						if(layerTotalWeight >= weigthLeft)
 						{
+							timelineState._weight = 0;
 							break;
 						}
 						else
@@ -617,9 +724,10 @@
 							weigthLeft -= layerTotalWeight;
 						}
 					}
-					exLayer = currentLayer;
+					prevLayer = currentLayer;
 					
-					weight = timelineState.weight * weigthLeft;
+					weight = timelineState._animationState.weight * timelineState._animationState.fadeWeight * weigthLeft;
+					timelineState._weight = weight;
 					if(weight && timelineState._blendEnabled)
 					{
 						transform = timelineState._transform;
@@ -629,8 +737,8 @@
 						y += transform.y * weight;
 						skewX += transform.skewX * weight;
 						skewY += transform.skewY * weight;
-						scaleX += transform.scaleX * weight;
-						scaleY += transform.scaleY * weight;
+						scaleX += (transform.scaleX - 1) * weight;
+						scaleY += (transform.scaleY - 1) * weight;
 						pivotX += pivot.x * weight;
 						pivotY += pivot.y * weight;
 						
@@ -651,7 +759,7 @@
 		
 		private function sortState(state1:TimelineState, state2:TimelineState):int
 		{
-			return state1.layer < state2.layer?-1:1;
+			return state1._animationState.layer < state2._animationState.layer?-1:1;
 		}
 	}
 }
