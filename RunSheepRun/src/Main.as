@@ -43,7 +43,7 @@ import com.khaledgarbaya.runsheeprun.*;
         private var mBackground:Loader;
         private var mProgressBar:ProgressBar;
         //set to empty when testing on device
-        private const BASE_PATH:String = "./assets/";
+        private const BASE_PATH:String = "";
 
 		public function Main():void 
 		{
