@@ -43,6 +43,7 @@
     <!-- Identifies the ActionScript extensions used by an application. -->
     <extensions>
         <extensionID>so.cuo.platform.admob</extensionID>
+        <extensionID>eu.alebianco.air.extensions.analytics.NativeGATracker</extensionID>
     </extensions>
 
     <!-- Settings for the application's initial window. Required. -->

@@ -2,32 +2,19 @@ package {
 import com.khaledgarbaya.runsheeprun.*;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
-	import flash.ui.Multitouch;
-	import flash.ui.MultitouchInputMode;
 	import flash.desktop.NativeApplication;
-    import flash.display.Bitmap;
     import flash.display.Loader;
     import flash.display.Sprite;
     import flash.events.Event;
     import flash.filesystem.File;
-    import flash.filesystem.FileMode;
-    import flash.filesystem.FileStream;
     import flash.geom.Rectangle;
     import flash.system.Capabilities;
-    import flash.utils.ByteArray;
     import flash.utils.setTimeout;
 
-import so.cuo.platform.admob.Admob;
-import so.cuo.platform.admob.AdmobPosition;
-
-import so.cuo.platform.admob.ExtraParameter;
-
-import starling.core.Starling;
+    import starling.core.Starling;
     import starling.events.Event;
     import starling.textures.RenderTexture;
     import starling.utils.AssetManager;
-    import starling.utils.RectangleUtil;
-    import starling.utils.ScaleMode;
     import starling.utils.SystemUtil;
     import starling.utils.formatString;
 	
@@ -37,7 +24,6 @@ import starling.core.Starling;
     //addMob
     import so.cuo.platform.admob.Admob;
     import so.cuo.platform.admob.AdmobEvent;
-    import so.cuo.platform.admob.AdmobSize;
     /**
      * ...
      * @author kgarbaya
@@ -46,6 +32,11 @@ import starling.core.Starling;
 	[SWF(width="480", height="320", frameRate="60", backgroundColor="#57BDE3")]
 	public class Main extends Sprite
 	{
+        //tracking and admob keys
+        private static const TRACKING_ID: String = "UA-47026008-3";
+        private static const INTERSTITIAL_ID: String = "ca-app-pub-1160929001434032/4676424301";
+
+
 		private const StageWidth:int  = 480;
         private const StageHeight:int = 320;
 
