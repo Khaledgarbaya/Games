@@ -32,7 +32,7 @@ public class InGameScreen extends Sprite {
 
     private function initialize(event:Event):void {
         this.removeEventListener(Event.ADDED_TO_STAGE, initialize);
-        Game.gameAsset.playSound("music_game_intro", 0, 9999, new SoundTransform(0.2));
+        //Game.gameAsset.playSound("music_game_intro", 0, 9999, new SoundTransform(0.2));
         grasse = new Image(Game.gameAsset.getTexture("grass"));
         grasse.y = stage.stageHeight - grasse.texture.height;
         addChild(grasse);
