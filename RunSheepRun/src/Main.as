@@ -17,7 +17,12 @@ import com.khaledgarbaya.runsheeprun.*;
     import flash.utils.ByteArray;
     import flash.utils.setTimeout;
 
-    import starling.core.Starling;
+import so.cuo.platform.admob.Admob;
+import so.cuo.platform.admob.AdmobPosition;
+
+import so.cuo.platform.admob.ExtraParameter;
+
+import starling.core.Starling;
     import starling.events.Event;
     import starling.textures.RenderTexture;
     import starling.utils.AssetManager;
@@ -28,6 +33,11 @@ import com.khaledgarbaya.runsheeprun.*;
 	
 	import utils.ProgressBar;
 	import com.khaledgarbaya.utils.Logger;
+
+    //addMob
+    import so.cuo.platform.admob.Admob;
+    import so.cuo.platform.admob.AdmobEvent;
+    import so.cuo.platform.admob.AdmobSize;
     /**
      * ...
      * @author kgarbaya
@@ -44,6 +54,7 @@ import com.khaledgarbaya.runsheeprun.*;
         private var mProgressBar:ProgressBar;
         //set to empty when testing on device
         private const BASE_PATH:String = "";
+        private var admob:Admob;
 
 		public function Main():void 
 		{
@@ -109,13 +120,7 @@ import com.khaledgarbaya.runsheeprun.*;
             // we first have to enqueue pointers to all assets we want it to load.
 
             var appDir:File = File.applicationDirectory;
-            var files:Array = appDir.getDirectoryListing();
 
-            for (var i:uint=0; i<files.length;i++)
-            {
-                trace(files[i].name);
-                trace(files[i].nativePath);
-            }
             var assets:AssetManager = new AssetManager(scaleFactor);
 
             assets.verbose = Capabilities.isDebugger;
@@ -142,11 +147,28 @@ import com.khaledgarbaya.runsheeprun.*;
 
         private function startGame(assets:AssetManager):void
         {
-           var game:Game = mStarling.root as Game;
-            game.start(assets);
-            setTimeout(removeElements, 150);// delay to make 100% sure there's no flickering.
-        }
+            admob = Admob.getInstance();
 
+            admob.enableTrace = true;
+
+            var game:Game = mStarling.root as Game;
+            game.start(assets);
+
+            setTimeout(removeElements, 150);// delay to make 100% sure there's no flickering.
+
+            if(admob.supportDevice){
+                admob.setKeys("ca-app-pub-1160929001434032/4676424301");
+                admob.addEventListener(AdmobEvent.onInterstitialReceive,onAdReceived);
+                admob.cacheInterstitial();
+            }
+        }
+        protected function onAdReceived(event:AdmobEvent):void
+        {
+            Logger.info(event.type);
+            if(event.type==AdmobEvent.onInterstitialReceive){
+                admob.showInterstitial();
+            }
+        }
         private function initElements(scaleFactor:int):void
         {
             // Add background image. By using "loadBytes", we can avoid any flickering.

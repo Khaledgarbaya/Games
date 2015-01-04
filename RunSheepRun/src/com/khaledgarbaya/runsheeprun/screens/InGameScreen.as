@@ -16,6 +16,7 @@ import com.khaledgarbaya.runsheeprun.objects.SheepAnimation;
 import flash.media.SoundTransform;
 
 import starling.display.Image;
+import starling.display.Quad;
 import starling.display.Sprite;
 import starling.events.Event;
 
@@ -32,6 +33,9 @@ public class InGameScreen extends Sprite {
 
     private function initialize(event:Event):void {
         this.removeEventListener(Event.ADDED_TO_STAGE, initialize);
+        var bg: Quad = new Quad(stage.stageWidth, stage.stageHeight);
+        bg.alpha = 0;
+        addChild(bg);
         //Game.gameAsset.playSound("music_game_intro", 0, 9999, new SoundTransform(0.2));
         grasse = new Image(Game.gameAsset.getTexture("grass"));
         grasse.y = stage.stageHeight - grasse.texture.height;
@@ -50,7 +54,7 @@ public class InGameScreen extends Sprite {
         addChild(cloud);
 
         sheep = new SheepAnimation();
-        sheep.scaleX = sheep.scaleY = 0.5;
+        sheep.scaleX = sheep.scaleY = 0.25;
         sheep.x = 150;
         sheep.y = routes[0].y + routes[0].texture.height / 4;
         addChild(sheep);
@@ -61,9 +65,10 @@ public class InGameScreen extends Sprite {
     }
 
     private function onSwipeRec(e:AcheGestureEvent):void {
-        trace("onSwipe",e.dx);
-        trace("onSwipe",e.dy);
-        sheep.jump();
+        if(e.dy<0)
+        {
+            sheep.jump();
+        }
     }
 }
 }
