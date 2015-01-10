@@ -44,7 +44,7 @@ import com.khaledgarbaya.runsheeprun.*;
         private var mBackground:Loader;
         private var mProgressBar:ProgressBar;
         //set to empty when testing on device
-        private const BASE_PATH:String = "";
+        private const BASE_PATH:String = "./assets/";
         private var admob:Admob;
 
 		public function Main():void 
