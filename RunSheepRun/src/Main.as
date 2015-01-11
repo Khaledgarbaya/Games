@@ -3,7 +3,8 @@
  * Created by kgar on 01/01/15.
  * Copyright (c) 2015 kgar. All rights reserved.
  */
-package {
+package
+{
 import com.khaledgarbaya.runsheeprun.*;
 
 import flash.display.StageAlign;
@@ -33,7 +34,8 @@ import so.cuo.platform.admob.Admob;
 import so.cuo.platform.admob.AdmobEvent;
 
 [SWF(width="480", height="320", frameRate="60", backgroundColor="#57BDE3")]
-public class Main extends Sprite {
+public class Main extends Sprite
+{
     //tracking and admob keys
     private static const TRACKING_ID:String = "UA-47026008-3";
     private static const INTERSTITIAL_ID:String = "ca-app-pub-1160929001434032/4676424301";
@@ -49,17 +51,21 @@ public class Main extends Sprite {
     private const BASE_PATH:String = "";
     private var admob:Admob;
 
-    public function Main():void {
+    public function Main():void
+    {
         Logger.info("Main::Main");
-        if (stage == null) {
+        if(stage == null)
+        {
             this.addEventListener(flash.events.Event.ADDED_TO_STAGE, initialize);
         }
-        else {
+        else
+        {
             initialize(null);
         }
     }
 
-    private function initialize(event:flash.events.Event):void {
+    private function initialize(event:flash.events.Event):void
+    {
         Logger.info("Main::initialize");
         this.removeEventListener(flash.events.Event.ADDED_TO_STAGE, initialize);
         stage.scaleMode = StageScaleMode.NO_SCALE;
@@ -84,7 +90,8 @@ public class Main extends Sprite {
         mStarling.stage.stageHeight = StageHeight; // <- same size on all devices!
         mStarling.enableErrorChecking = Capabilities.isDebugger;
         mStarling.simulateMultitouch = false;
-        mStarling.addEventListener(starling.events.Event.ROOT_CREATED, function (event:starling.events.Event):void {
+        mStarling.addEventListener(starling.events.Event.ROOT_CREATED, function (event:starling.events.Event):void
+        {
             loadAssets(scaleFactor, startGame);
         });
 
@@ -94,19 +101,23 @@ public class Main extends Sprite {
         // When the game becomes inactive, we pause Starling; otherwise, the enter frame event
         // would report a very long 'passedTime' when the app is reactivated.
 
-        if (!SystemUtil.isDesktop) {
+        if(!SystemUtil.isDesktop)
+        {
             NativeApplication.nativeApplication.addEventListener(
-                    flash.events.Event.ACTIVATE, function (e:*):void {
+                    flash.events.Event.ACTIVATE, function (e:*):void
+                    {
                         mStarling.start();
                     });
             NativeApplication.nativeApplication.addEventListener(
-                    flash.events.Event.DEACTIVATE, function (e:*):void {
+                    flash.events.Event.DEACTIVATE, function (e:*):void
+                    {
                         mStarling.stop(true);
                     });
         }
     }
 
-    private function loadAssets(scaleFactor:int, onComplete:Function):void {
+    private function loadAssets(scaleFactor:int, onComplete:Function):void
+    {
         // Our assets are loaded and managed by the 'AssetManager'. To use that class,
         // we first have to enqueue pointers to all assets we want it to load.
 
@@ -115,7 +126,8 @@ public class Main extends Sprite {
         var assets:AssetManager = new AssetManager(scaleFactor);
 
         assets.verbose = Capabilities.isDebugger;
-        if (!SystemUtil.isDesktop) {
+        if(!SystemUtil.isDesktop)
+        {
             assets.enqueue(
                     appDir.resolvePath(BASE_PATH + "audio"),
                     appDir.resolvePath(BASE_PATH + "animation"),
@@ -128,13 +140,18 @@ public class Main extends Sprite {
         // has not loaded them yet. This happens in the "loadQueue" method; and since this
         // will take a while, we'll update the progress bar accordingly.
 
-        assets.loadQueue(function (ratio:Number):void {
+        assets.loadQueue(function (ratio:Number):void
+        {
             mProgressBar.ratio = ratio;
-            if (ratio == 1) onComplete(assets);
+            if(ratio == 1)
+            {
+                onComplete(assets);
+            }
         });
     }
 
-    private function startGame(assets:AssetManager):void {
+    private function startGame(assets:AssetManager):void
+    {
         admob = Admob.getInstance();
 
         admob.enableTrace = true;
@@ -144,21 +161,25 @@ public class Main extends Sprite {
 
         setTimeout(removeElements, 150);// delay to make 100% sure there's no flickering.
 
-        if (admob.supportDevice) {
+        if(admob.supportDevice)
+        {
             admob.setKeys("ca-app-pub-1160929001434032/4676424301");
             admob.addEventListener(AdmobEvent.onInterstitialReceive, onAdReceived);
             admob.cacheInterstitial();
         }
     }
 
-    protected function onAdReceived(event:AdmobEvent):void {
+    protected function onAdReceived(event:AdmobEvent):void
+    {
         Logger.info(event.type);
-        if (event.type == AdmobEvent.onInterstitialReceive) {
+        if(event.type == AdmobEvent.onInterstitialReceive)
+        {
             admob.showInterstitial();
         }
     }
 
-    private function initElements(scaleFactor:int):void {
+    private function initElements(scaleFactor:int):void
+    {
         // Add background image. By using "loadBytes", we can avoid any flickering.
 
         /* var bgPath:String = formatString("textures/{0}x/background.jpg", scaleFactor);
@@ -189,14 +210,16 @@ public class Main extends Sprite {
         mStarling.nativeOverlay.addChild(mProgressBar);
     }
 
-    private function removeElements():void {
+    private function removeElements():void
+    {
         /* if (mBackground)
          {
          mStarling.nativeOverlay.removeChild(mBackground);
          mBackground = null;
          }*/
 
-        if (mProgressBar) {
+        if(mProgressBar)
+        {
             mStarling.nativeOverlay.removeChild(mProgressBar);
             mProgressBar = null;
         }
