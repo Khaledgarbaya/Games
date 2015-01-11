@@ -1,7 +1,7 @@
 /**
- * ...
- * @author kgarbaya
- * @copyright (c) Khaled Garbaya
+ *
+ * Created by kgar on 02/01/15.
+ * Copyright (c) 2015 kgar. All rights reserved.
  */
 package com.khaledgarbaya.runsheeprun.screens {
 import acheGesture.GestureManager;
@@ -18,7 +18,8 @@ import starling.events.Event;
 
 public class InGameScreen extends Sprite {
     private var sheep:SheepAnimation;
-    private var scrollBG: ScrollBackground;
+    private var scrollBG:ScrollBackground;
+
     public function InGameScreen() {
         this.addEventListener(Event.ADDED_TO_STAGE, initialize)
     }
@@ -41,8 +42,7 @@ public class InGameScreen extends Sprite {
     }
 
     private function onSwipeRec(e:AcheGestureEvent):void {
-        if(e.dy<0)
-        {
+        if (e.dy < 0) {
             sheep.jump();
         }
     }

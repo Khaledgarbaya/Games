@@ -1,7 +1,7 @@
 /**
- * ...
- * @author kgarbaya
- * @copyright (c) Khaled Garbaya
+ *
+ * Created by kgar on 10/01/15.
+ * Copyright (c) 2015 kgar. All rights reserved.
  */
 package com.khaledgarbaya.runsheeprun.objects {
 import com.khaledgarbaya.runsheeprun.Game;
