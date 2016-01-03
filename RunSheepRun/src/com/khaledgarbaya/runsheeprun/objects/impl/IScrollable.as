@@ -7,6 +7,6 @@ package com.khaledgarbaya.runsheeprun.objects.impl
 {
 public interface IScrollable
 {
-    function scroll():void;
+    function scroll(scrollSpeed:Number):void;
 }
 }

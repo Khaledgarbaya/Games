@@ -12,14 +12,14 @@ import acheGesture.data.SwipeGesture;
 import acheGesture.events.AcheGestureEvent;
 
 import com.khaledgarbaya.runsheeprun.objects.ScrollBackground;
-import com.khaledgarbaya.runsheeprun.objects.SheepAnimation;
+import com.khaledgarbaya.runsheeprun.objects.HeroAnimation;
 
 import starling.display.Sprite;
 import starling.events.Event;
 
 public class InGameScreen extends Sprite
 {
-    private var sheep:SheepAnimation;
+    private var sheep:HeroAnimation;
     private var scrollBG:ScrollBackground;
 
     public function InGameScreen()
@@ -34,23 +34,12 @@ public class InGameScreen extends Sprite
         scrollBG = new ScrollBackground();
         addChild(scrollBG);
 
-        sheep = new SheepAnimation();
+        sheep = new HeroAnimation();
         sheep.scaleX = sheep.scaleY = 0.25;
         sheep.x = 150;
-        sheep.y = stage.stageHeight - stage.stageHeight / 4;
+        sheep.y = stage.stageHeight/2;
         addChild(sheep);
 
-        //Add Gesture recognition
-        var gesture:Gesture = new SwipeGesture(onSwipeRec);
-        GestureManager.add(this, new GestureVars().onSwipe(gesture).vars);
-    }
-
-    private function onSwipeRec(e:AcheGestureEvent):void
-    {
-        if(e.dy < 0)
-        {
-            sheep.jump();
-        }
     }
 }
 }

@@ -5,14 +5,14 @@
  */
 package com.khaledgarbaya.runsheeprun.objects
 {
-import com.khaledgarbaya.runsheeprun.Game;
-import com.khaledgarbaya.runsheeprun.objects.impl.IScrollable;
+    import com.khaledgarbaya.runsheeprun.Game;
+    import com.khaledgarbaya.runsheeprun.objects.impl.IScrollable;
 
-import starling.display.Image;
-import starling.display.Sprite;
-import starling.events.Event;
+    import starling.display.Image;
+    import starling.display.Sprite;
+    import starling.events.Event;
 
-public class Route extends Sprite implements IScrollable
+    public class Route extends Sprite implements IScrollable
 {
     private var routes:Vector.<Image>;
     private var route:Image;
@@ -24,6 +24,7 @@ public class Route extends Sprite implements IScrollable
 
     private function initialize(event:Event):void
     {
+        this.removeEventListener(Event.ADDED_TO_STAGE, initialize);
         routes = new Vector.<Image>();
         for(var i:uint = 0; i < 4; ++i)
         {
@@ -35,9 +36,9 @@ public class Route extends Sprite implements IScrollable
         }
     }
 
-    public function scroll():void
+    public function scroll(scrollSpeed:Number):void
     {
-        this.x -= 4;
+        this.x -= scrollSpeed;
         if(this.x <= -(this.width - stage.stageWidth))
         {
             this.x = 0;

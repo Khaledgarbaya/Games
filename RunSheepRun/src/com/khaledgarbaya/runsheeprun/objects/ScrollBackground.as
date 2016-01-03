@@ -14,13 +14,15 @@ import starling.events.Event;
 
 public class ScrollBackground extends Sprite
 {
+    public var route:Route;
+    public var scrollSpeed: Number;
     private var cloud:Clouds;
     private var grass:Image;
-    public var route:Route;
     private var grass1:Image;
 
-    public function ScrollBackground()
+    public function ScrollBackground(scrollSpeed: Number = 1)
     {
+        this.scrollSpeed = scrollSpeed;
         this.addEventListener(Event.ADDED_TO_STAGE, initialize);
     }
 
@@ -49,8 +51,8 @@ public class ScrollBackground extends Sprite
 
     private function scrollBG(event:Event):void
     {
-        route.scroll();
-        cloud.scroll();
+        route.scroll(scrollSpeed);
+        cloud.scroll(scrollSpeed);
         grass.x -= 2;
         grass1.x -= 2;
         if(grass1.x < grass.width)

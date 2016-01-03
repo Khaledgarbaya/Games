@@ -47,8 +47,9 @@ public class Main extends Sprite
     private var mStarling:Starling;
     private var mBackground:Loader;
     private var mProgressBar:ProgressBar;
+
     //set to empty when testing on device
-    private const BASE_PATH:String = "";
+    public var BASE_PATH:String = "./assets/";
     private var admob:Admob;
 
     public function Main():void
@@ -163,7 +164,7 @@ public class Main extends Sprite
 
         if(admob.supportDevice)
         {
-            admob.setKeys("ca-app-pub-1160929001434032/4676424301");
+            admob.setKeys(INTERSTITIAL_ID);
             admob.addEventListener(AdmobEvent.onInterstitialReceive, onAdReceived);
             admob.cacheInterstitial();
         }

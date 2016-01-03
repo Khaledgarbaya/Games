@@ -17,13 +17,14 @@ import flash.net.URLLoader;
 import starling.display.Sprite;
 import starling.events.Event;
 
-public class SheepAnimation extends Sprite
+public class HeroAnimation extends Sprite
 {
     private var loader:URLLoader;
     private var factory:StarlingFactory;
     private var armature:Armature;
     private var sheepDisplay:Sprite;
     private var isJumping:Boolean = false;
+    private var _currentDate;
 
     //Jump params
     private static const DEFAULT_DIRECTION:int = -1;
@@ -33,7 +34,7 @@ public class SheepAnimation extends Sprite
     private var velocity:Number = DEFAULT_VELOCITY;  //how much to move every increment, reset every jump to default value
     private var direction:int = DEFAULT_DIRECTION;  //reset this to -1 every time the jump starts
 
-    public function SheepAnimation()
+    public function HeroAnimation()
     {
         this.addEventListener(starling.events.Event.ADDED_TO_STAGE, initialize);
     }
@@ -57,59 +58,20 @@ public class SheepAnimation extends Sprite
         addChild(sheepDisplay);
         WorldClock.clock.add(armature);
 
-        armature.animation.gotoAndPlay("run");
+        armature.animation.gotoAndPlay("bounce");
         addEventListener(starling.events.Event.ENTER_FRAME, tick);
     }
 
 
     private function tick(event:starling.events.Event):void
     {
-        if(!isJumping && armature.animation.lastAnimationName == "bounce")
-        {
-            armature.animation.gotoAndPlay("run", 0.1);
-        }
-        else if(isJumping)
-        {
-            jumpLoop();
-        }
+        // cos movement
+        _currentDate = new Date();
+        this.y = 140 + (Math.cos(_currentDate.getTime() * 0.002)) * 5;
+
+        // advance animation ticker
         WorldClock.clock.advanceTime(-1);
     }
 
-    public function jump():void
-    {
-        if(!isJumping)
-        {
-            tempY = sheepDisplay.y;
-            isJumping = true;
-        }
-
-        armature.animation.gotoAndPlay("bounce");
-    }
-
-    function jumpLoop()
-    { //lets assume this is running every frame while jumping
-        sheepDisplay.y += velocity * direction; //take the current velocity, and apply it in the current direction
-        if(direction < 0)
-        {
-            velocity *= friction; //reduce velocity as player ascends
-        }
-        else
-        {
-            velocity *= 1 + (1 - friction); //increase velocity now that player is falling
-        }
-
-        if(velocity < 1)
-        {
-            direction = 1;
-        } //if player is moving less than 1 pixel now, change direction
-        if(sheepDisplay.y > tempY)
-        {  //stage.stageheight being wherever your floor is
-            sheepDisplay.y = tempY; //put player on the floor exactly
-            //jump is over, stop the jumpLoop
-            isJumping = false;
-            direction = DEFAULT_DIRECTION;
-            velocity = DEFAULT_VELOCITY;
-        }
-    }
 }
 }

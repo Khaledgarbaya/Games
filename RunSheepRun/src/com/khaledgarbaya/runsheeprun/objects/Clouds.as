@@ -5,14 +5,14 @@
  */
 package com.khaledgarbaya.runsheeprun.objects
 {
-import com.khaledgarbaya.runsheeprun.Game;
-import com.khaledgarbaya.runsheeprun.objects.impl.IScrollable;
+    import com.khaledgarbaya.runsheeprun.Game;
+    import com.khaledgarbaya.runsheeprun.objects.impl.IScrollable;
 
-import starling.display.Image;
-import starling.display.Sprite;
-import starling.events.Event;
+    import starling.display.Image;
+    import starling.display.Sprite;
+    import starling.events.Event;
 
-public class Clouds extends Sprite implements IScrollable
+    public class Clouds extends Sprite implements IScrollable
 {
     private var clouds:Vector.<Image>;
     private var cloud:Image;
@@ -36,7 +36,7 @@ public class Clouds extends Sprite implements IScrollable
         }
     }
 
-    public function scroll():void
+    public function scroll(scrollSpeed:Number):void
     {
         var len:int = clouds.length;
         var cloud:Image;
