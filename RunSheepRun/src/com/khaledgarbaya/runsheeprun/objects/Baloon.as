@@ -22,7 +22,11 @@ package com.khaledgarbaya.runsheeprun.objects
         private function initialize(event:Event):void
         {
             this.removeEventListener(Event.ADDED_TO_STAGE, initialize);
-            baloonImage = new Image(Game.gameAsset.getTexture("baloon"));
+            baloonImage = new Image(Game.gameAsset.getTexture("balloon"));
+            baloonImage.scaleX =  baloonImage.scaleY = 0.5;
+            baloonImage.pivotY = baloonImage.height*2;
+            baloonImage.pivotX = baloonImage.width * 0.5;
+
             this.addChild(baloonImage);
         }
     }
