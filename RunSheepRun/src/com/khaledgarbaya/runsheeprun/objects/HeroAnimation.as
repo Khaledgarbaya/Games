@@ -59,16 +59,11 @@ public class HeroAnimation extends Sprite
         WorldClock.clock.add(armature);
 
         armature.animation.gotoAndPlay("bounce");
-        addEventListener(starling.events.Event.ENTER_FRAME, tick);
     }
 
 
-    private function tick(event:starling.events.Event):void
+    public function tick():void
     {
-        // cos movement
-        _currentDate = new Date();
-        this.y = 140 + (Math.cos(_currentDate.getTime() * 0.002)) * 5;
-
         // advance animation ticker
         WorldClock.clock.advanceTime(-1);
     }

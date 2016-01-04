@@ -5,21 +5,15 @@
  */
 package com.khaledgarbaya.runsheeprun.screens
 {
-import acheGesture.GestureManager;
-import acheGesture.data.Gesture;
-import acheGesture.data.GestureVars;
-import acheGesture.data.SwipeGesture;
-import acheGesture.events.AcheGestureEvent;
 
+import com.khaledgarbaya.runsheeprun.objects.Hero;
 import com.khaledgarbaya.runsheeprun.objects.ScrollBackground;
-import com.khaledgarbaya.runsheeprun.objects.HeroAnimation;
-
 import starling.display.Sprite;
 import starling.events.Event;
 
 public class InGameScreen extends Sprite
 {
-    private var sheep:HeroAnimation;
+    private var _hero:Hero;
     private var scrollBG:ScrollBackground;
 
     public function InGameScreen()
@@ -34,11 +28,11 @@ public class InGameScreen extends Sprite
         scrollBG = new ScrollBackground();
         addChild(scrollBG);
 
-        sheep = new HeroAnimation();
-        sheep.scaleX = sheep.scaleY = 0.25;
-        sheep.x = 150;
-        sheep.y = stage.stageHeight/2;
-        addChild(sheep);
+        _hero = new Hero();
+        _hero.scaleX = _hero.scaleY = 0.25;
+        _hero.x = 150;
+        _hero.y = stage.stageHeight/2;
+        addChild(_hero);
 
     }
 }
