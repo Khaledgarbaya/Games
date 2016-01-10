@@ -8,7 +8,12 @@ package com.khaledgarbaya.runsheeprun.screens
 
 import com.khaledgarbaya.runsheeprun.objects.Hero;
 import com.khaledgarbaya.runsheeprun.objects.ScrollBackground;
-import starling.display.Sprite;
+
+    import flash.events.MouseEvent;
+
+    import starling.core.Starling;
+
+    import starling.display.Sprite;
 import starling.events.Event;
 
 public class InGameScreen extends Sprite
@@ -33,7 +38,12 @@ public class InGameScreen extends Sprite
         _hero.x = 150;
         _hero.y = stage.stageHeight/2;
         addChild(_hero);
+        Starling.current.nativeStage.addEventListener(MouseEvent.CLICK, onHeroTriggered);
+    }
 
+    private function onHeroTriggered(event:MouseEvent):void
+    {
+        _hero.removeBaloon();
     }
 }
 }
