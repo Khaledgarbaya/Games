@@ -14,8 +14,9 @@ package com.khaledgarbaya.runsheeprun.objects
         private var heroAnimation;
         private var baloons: Vector.<Baloon>;
         private var _currentDate:Date;
-        private var _weight: Number = 0;
+        private var _weight: Number = 50;
         private var _progressiveWeight: Number = 0;
+        private var weightDiff: Number;
 
         public const BASE_WEIGHT: Number = 140;
         public function Hero()
@@ -45,23 +46,28 @@ package com.khaledgarbaya.runsheeprun.objects
             b.rotation = deg2rad(random(-20,20));
             addChild(b);
             addChild(heroAnimation);
+            weight -= 15;
             baloons.push(b);
         }
 
         public function removeBaloon():void
         {
             var b: Baloon = baloons.shift();
-            weight += 15;
+            weight += 30;
             removeChild(b);
         }
 
         public function tick(e:Event):void
         {
             _currentDate = new Date();
-            if(_progressiveWeight < weight)
+            weightDiff = weight - _progressiveWeight;
+
+            if(weightDiff != 0)
             {
-                _progressiveWeight += weight/100;
+                _progressiveWeight += weightDiff/150;
+                weightDiff -= weightDiff/150;
             }
+
             this.y = BASE_WEIGHT + _progressiveWeight + (Math.cos(_currentDate.getTime() * 0.002)) * 5;
             heroAnimation.tick()
         }
