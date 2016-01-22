@@ -8,6 +8,7 @@ package com.khaledgarbaya.runsheeprun.screens
 
 import com.khaledgarbaya.runsheeprun.objects.Hero;
 import com.khaledgarbaya.runsheeprun.objects.ScrollBackground;
+    import com.khaledgarbaya.runsheeprun.ui.Control;
 
     import flash.events.MouseEvent;
 
@@ -20,7 +21,7 @@ public class InGameScreen extends Sprite
 {
     private var _hero:Hero;
     private var scrollBG:ScrollBackground;
-
+    private var control: Control;
     public function InGameScreen()
     {
         this.addEventListener(Event.ADDED_TO_STAGE, initialize)
@@ -38,12 +39,15 @@ public class InGameScreen extends Sprite
         _hero.x = 150;
         _hero.y = stage.stageHeight/2;
         addChild(_hero);
-        Starling.current.nativeStage.addEventListener(MouseEvent.CLICK, onHeroTriggered);
-    }
 
-    private function onHeroTriggered(event:MouseEvent):void
-    {
-        _hero.removeBaloon();
+        control = new Control();
+        control.x = stage.stageWidth - 100;
+        control.y = 20;
+
+        control.onAddTriggered = function(){_hero.addBaloon();};
+        control.onRemoveTriggered = function(){_hero.removeBaloon();};
+
+        addChild(control);
     }
 }
 }
