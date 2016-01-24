@@ -4,16 +4,7 @@
     <option name="iosPackageType" value="ad hoc distribution" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1efa3766-30e0-4813-9921-d0ae2055827d" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/RunSheepRun/src/assets/textures/1x/addButton.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/RunSheepRun/src/assets/textures/2x/addButton.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/RunSheepRun/src/assets/textures/1x/removeButton.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/RunSheepRun/src/assets/textures/2x/removeButton.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/RunSheepRun/src/com/khaledgarbaya/runsheeprun/ui/Control.as" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Games.iws" afterPath="$PROJECT_DIR$/Games.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/RunSheepRun/src/com/khaledgarbaya/runsheeprun/objects/Hero.as" afterPath="$PROJECT_DIR$/RunSheepRun/src/com/khaledgarbaya/runsheeprun/objects/Hero.as" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/RunSheepRun/src/com/khaledgarbaya/runsheeprun/screens/InGameScreen.as" afterPath="$PROJECT_DIR$/RunSheepRun/src/com/khaledgarbaya/runsheeprun/screens/InGameScreen.as" />
-    </list>
+    <list default="true" id="1efa3766-30e0-4813-9921-d0ae2055827d" name="Default" comment="" />
     <ignored path="Games.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/out/" />
@@ -101,8 +92,8 @@
       <file leaf-file-name="Hero.as" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/RunSheepRun/src/com/khaledgarbaya/runsheeprun/objects/Hero.as">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.53640777">
-              <caret line="17" column="51" selection-start-line="17" selection-start-column="51" selection-end-line="17" selection-end-column="51" />
+            <state vertical-scroll-proportion="0.41262135">
+              <caret line="14" column="45" selection-start-line="14" selection-start-column="45" selection-end-line="14" selection-end-column="45" />
               <folding>
                 <element signature="e#144#175#0" expanded="true" />
               </folding>
@@ -572,12 +563,12 @@
       <workItem from="1419772579801" duration="8670000" />
       <workItem from="1420135365609" duration="109000" />
       <workItem from="1451834418668" duration="7019000" />
-      <workItem from="1453485110279" duration="3536000" />
+      <workItem from="1453485110279" duration="3670000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="24441000" />
+    <option name="totallyTimeSpent" value="24575000" />
   </component>
   <component name="TodoView" selected-index="0">
     <todo-panel id="selected-file">
@@ -870,8 +861,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/RunSheepRun/src/com/khaledgarbaya/runsheeprun/objects/Hero.as">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.53640777">
-          <caret line="17" column="51" selection-start-line="17" selection-start-column="51" selection-end-line="17" selection-end-column="51" />
+        <state vertical-scroll-proportion="0.41262135">
+          <caret line="14" column="45" selection-start-line="14" selection-start-column="45" selection-end-line="14" selection-end-column="45" />
           <folding>
             <element signature="e#144#175#0" expanded="true" />
           </folding>
