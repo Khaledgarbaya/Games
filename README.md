@@ -1,4 +1,3 @@
 Games
 =====
-
-Repo holding all my games 
+Games ideas just for fun, I will be adding more.
